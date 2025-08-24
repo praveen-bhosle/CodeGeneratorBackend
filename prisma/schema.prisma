@@ -1,8 +1,37 @@
 datasource db { 
     provider =  "postgresql" 
-    url =  env("mongodb://127.0.0.1:27017/codegen") 
+    url =  env("DATABASE_URL") 
 }
 
 generator client { 
     provider = "prisma-client-js"
+}
+
+enum Sender { 
+    USER 
+    ASSISTANT
+    SYSTEM
+}
+
+model message { 
+    id      Int  @id @default(autoincrement()) 
+    content String 
+    sentBy  Sender
+    projectId Int  
+    project  Project @relation(references: [id] , fields: [projectId])
+}
+
+model Project { 
+    id Int @id @default(autoincrement())
+    title String 
+    messages message[]   
+    files   File[]
+}
+
+model File { 
+    id Int @id @default(autoincrement()) 
+    filepath String 
+    content  String 
+    projectId Int 
+    project   Project @relation(references: [id] ,fields: [projectId]   )
 }
