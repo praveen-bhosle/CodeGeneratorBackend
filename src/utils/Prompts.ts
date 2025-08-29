@@ -2,13 +2,35 @@ export const initialPrompt =
 `You have to create a minimal, modern frontend project in the current directory using **React, JavaScript, Vite, and TailwindCSS**, managed with **Yarn**.  
 Requirements:
 1. Return **only** a JSON object with the following structure:
-   {
-     "text": "Brief explanation of changes or purpose of the files",
-     "files": [
-       { "filepath": "/src/App.jsx", "content": "..." },
-       ...
-     ]
-   }
+{
+  "text": "Brief explanation of changes or purpose of the files",
+  "files": {
+    "package.json": {
+      "file": {
+        "contents": "{\n  \"name\": \"vite-starter\",\n  \"private\": true,\n  \"version\": \"0.0.0\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"vite build\",\n    \"preview\": \"vite preview\"\n  },\n  \"devDependencies\": {\n    \"vite\": \"^4.0.4\"\n  }\n}"
+      }
+    },
+    "index.html": {
+      "file": {
+        "contents": "<!DOCTYPE html>\n<html lang=\"en\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/vite.svg\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n    <title>Vite App</title>\n  </head>\n  <body>\n    <div id=\"app\"></div>\n    <script type=\"module\" src=\"/src/main.js\"></script>\n  </body>\n</html>"
+      }
+    },
+    "src": {
+      "directory": {
+        "main.js": {
+          "file": {
+            "contents": "\n console.log('Hello from WebContainers!')\n  "
+          }
+        },
+        "main.css": {
+          "file": {
+            "contents": "\n body {\n margin: 0;\n }\n"
+          }
+        }
+      }
+    }
+  }
+}
 2. Populate all files completely so that the user can run yarn install and yarn dev directly without further modifications.
 3. Include all necessary files:
    - package.json (with correct dependencies and devDependencies, including "@vitejs/plugin-react" with proper version)

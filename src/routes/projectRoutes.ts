@@ -11,11 +11,15 @@ projectRouter.post("/create" , async (req: Request , res : Response) => {
     try {  
         const question = req.query['question'] ;
         if(!question) throw new NotFoundError("'question' query missing.")  
-        const projectId = await createProject(question.toString()) ; 
+        console.log("creating project") ;  
+        let project = await createProject(question.toString()) ; 
+        console.log("project created") ; 
         const chat = ` ${Sender.USER} : ${question}\n` ; 
+        console.log("sending question") ; 
         const llmResponse = await sendMessage(chat,true)  ; 
-        await handleLLMResponse(projectId,llmResponse) ; 
-        const project = await getProject(projectId) ; 
+        console.log(llmResponse) ; 
+        await handleLLMResponse(project,llmResponse) ; 
+        project = await getProject(project.id) ; 
         res.status(200).json(project) ; 
         }
         catch(e) { 
@@ -57,7 +61,7 @@ projectRouter.put("/:id" , async ( req : Request , res : Response ) => {
     let project  = await getProject(id) ;  
     const chat = `${Sender.USER} :  ${ JSON.stringify( { text : query , files : project.files } ) } \n`  ; 
     const llmResponse = await sendMessage( chat , false  ) ;
-    await handleLLMResponse(id, llmResponse) ; 
+    await handleLLMResponse(  project  ,  llmResponse) ; 
     project = await getProject(id) ; 
     res.status(201).json(project) ; 
     }

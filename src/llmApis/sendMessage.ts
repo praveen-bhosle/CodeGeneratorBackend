@@ -10,8 +10,9 @@ const api_url = process.env.OPENAI_BASEURL! ;
 export async function  sendMessage( chat :string , isInitial : boolean  ) { 
     const prompt = isInitial ? initialPrompt : updatePrompt ;
     const input = 'SYSTEM : ' + prompt + '\n' + chat ;  
+    console.log(api_url) ; 
     const llmResponse = await  axios.post( api_url , { "model": "gpt-4.1","input":  input  } , { headers : {  'Authorization' :  `Bearer ${api_key}`  }}).then(  response => response.data )  ;  
     //@ts-ignore 
-    const msg:string  = JSON.stringify(llmResponse['output'][0]['content'][0]['text']) ;
+    const msg:string  = llmResponse['output'][0]['content'][0]['text'] ;
     return msg ; 
 }
